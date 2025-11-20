@@ -66,6 +66,18 @@ This project includes:
 - Jest + Supertest (testing)
 
 
+## 📑 Frontend & Backend
+This challenge consists of two projects: Backend and frontend.
+
+### 1. Backend
+```bash
+https://github.com/ridwanam9/industrix_backend.git
+```
+### 2. Frontend
+```bash
+https://github.com/ridwanam9/industrix_frontend.git
+```
+
 ## 🛠️ Project Setup (from zero)
 
 This section assumes a completely new team member with 0 context.
