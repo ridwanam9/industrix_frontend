@@ -1,5 +1,5 @@
 import TodoList from "../components/TodoList";
-import { Input, Select, Button } from "antd";
+import { Input, Select } from "antd";
 import { useTodos } from "../context/TodoContext";
 import { useCategories } from "../context/CategoryContext";
 import TodoForm from "../components/TodoForm";
@@ -10,7 +10,6 @@ export default function Home() {
     setStatusFilter,
     setCategoryFilter,
     setPriorityFilter,
-    openForm,
   } = useTodos();
 
   const { categories } = useCategories();
