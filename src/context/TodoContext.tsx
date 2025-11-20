@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getTodos } from "../api/todos";
+import { getTodos, createTodo, updateTodo, deleteTodo, toggleTodo } from "../api/todos";
 
 const TodoContext = createContext<any>(null);
 
@@ -10,11 +10,33 @@ export const TodoProvider = ({ children }: any) => {
     total_pages: 1,
   });
   const [search, setSearch] = useState("");
+  const [editingTodo, setEditingTodo] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const loadTodos = async (page = 1) => {
     const res = await getTodos(page, search);
     setTodos(res.data.data);
     setPagination(res.data.pagination);
+  };
+
+  const addTodo = async (data: any) => {
+    await createTodo(data);
+    loadTodos();
+  };
+
+  const editTodo = async (id: number, data: any) => {
+    await updateTodo(id, data);
+    loadTodos();
+  };
+
+  const removeTodo = async (id: number) => {
+    await deleteTodo(id);
+    loadTodos();
+  };
+
+  const toggleCompleteStatus = async (id: number) => {
+    await toggleTodo(id);
+    loadTodos();
   };
 
   useEffect(() => {
@@ -23,7 +45,23 @@ export const TodoProvider = ({ children }: any) => {
 
   return (
     <TodoContext.Provider
-      value={{ todos, pagination, search, setSearch, loadTodos }}
+      value={{
+        todos,
+        pagination,
+        search,
+        setSearch,
+        loadTodos,
+
+        // NEW
+        addTodo,
+        editTodo,
+        removeTodo,
+        setEditingTodo,
+        editingTodo,
+        isModalOpen,
+        setIsModalOpen,
+        toggleCompleteStatus
+      }}
     >
       {children}
     </TodoContext.Provider>

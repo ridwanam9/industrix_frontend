@@ -1,6 +1,7 @@
 import TodoList from "../components/TodoList";
 import { Input } from "antd";
 import { useTodos } from "../context/TodoContext";
+import TodoForm from "../components/TodoForm";
 
 export default function Home() {
   const { setSearch } = useTodos();
@@ -13,6 +14,8 @@ export default function Home() {
         style={{ marginBottom: 20 }}
       />
       <TodoList />
+      
+      <TodoForm />
     </div>
   );
 }
