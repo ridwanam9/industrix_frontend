@@ -100,6 +100,7 @@ export default function TodoList() {
         rowKey="id"
         columns={columns}
         dataSource={todos}
+        scroll={{ x: "max-content" }}
         pagination={{
           current: pagination.current_page,
           total: pagination.total_pages * 10,
