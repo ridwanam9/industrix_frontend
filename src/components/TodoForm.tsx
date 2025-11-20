@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useTodos } from "../context/TodoContext";
 import { useCategories } from "../context/CategoryContext";
 
-
 export default function TodoForm() {
   const {
     isModalOpen,
@@ -14,6 +13,7 @@ export default function TodoForm() {
     editTodo
   } = useTodos();
 
+  const { categories } = useCategories();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -37,9 +37,6 @@ export default function TodoForm() {
     setEditingTodo(null);
   };
 
-  const { categories } = useCategories();
-
-
   return (
     <Modal
       title={editingTodo ? "Edit Todo" : "Add Todo"}
@@ -51,16 +48,17 @@ export default function TodoForm() {
       }}
       okText="Save"
     >
-        <Form.Item name="category_id" label="Category">
-            <Select
-                options={categories.map((c: any) => ({
-                value: c.id,
-                label: c.name
-                }))}
-            />
-            </Form.Item>
-
       <Form form={form} layout="vertical">
+
+        <Form.Item name="category_id" label="Category">
+          <Select
+            options={categories.map((c: any) => ({
+              value: c.id,
+              label: c.name,
+            }))}
+          />
+        </Form.Item>
+
         <Form.Item name="title" label="Title" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -78,6 +76,7 @@ export default function TodoForm() {
             ]}
           />
         </Form.Item>
+
       </Form>
     </Modal>
   );
