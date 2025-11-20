@@ -43,13 +43,6 @@ export default function Home() {
           }}
         />
 
-        <Button
-          type="primary"
-          onClick={openForm}
-          style={{ flexShrink: 0 }}
-        >
-          + Add Todo
-        </Button>
       </div>
 
       {/* Filters */}
