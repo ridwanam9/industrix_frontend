@@ -1,4 +1,4 @@
-import { Table, Button, Tag, Popconfirm } from "antd";
+import { Table, Button, Tag, Popconfirm, Card } from "antd";
 import { useTodos } from "../context/TodoContext";
 
 export default function TodoList() {
@@ -13,77 +13,77 @@ export default function TodoList() {
   } = useTodos();
 
   const columns = [
-  { title: "Title", dataIndex: "title" },
-  { title: "Description", dataIndex: "description" },
+    { title: "Title", dataIndex: "title" },
+    { title: "Description", dataIndex: "description" },
 
-  {
-    title: "Category",
-    render: (todo: any) =>
-      todo.Category ? (
-        <Tag color={todo.Category.color || "blue"}>
-          {todo.Category.name}
-        </Tag>
-      ) : (
-        <Tag>No Category</Tag>
+    {
+      title: "Category",
+      render: (todo: any) =>
+        todo.Category ? (
+          <Tag color={todo.Category.color || "blue"}>
+            {todo.Category.name}
+          </Tag>
+        ) : (
+          <Tag>No Category</Tag>
+        ),
+    },
+
+    {
+      title: "Priority",
+      dataIndex: "priority",
+      render: (p: string) => {
+        if (p === "high") return <Tag color="red">High</Tag>;
+        if (p === "medium") return <Tag color="gold">Medium</Tag>;
+        return <Tag color="green">Low</Tag>;
+      }
+    },
+
+    {
+      title: "Status",
+      render: (todo: any) =>
+        todo.completed ? (
+          <Tag color="green">Completed</Tag>
+        ) : (
+          <Tag color="red">Pending</Tag>
+        ),
+    },
+
+    {
+      title: "Action",
+      render: (todo: any) => (
+        <div style={{ display: "flex", gap: 10 }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setEditingTodo(todo);
+              setIsModalOpen(true);
+            }}
+          >
+            Edit
+          </Button>
+
+          <Popconfirm
+            title="Delete this todo?"
+            onConfirm={() => removeTodo(todo.id)}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
+
+          <Button
+            onClick={() => toggleCompleteStatus(todo.id)}
+            type={todo.completed ? "default" : "dashed"}
+          >
+            {todo.completed ? "Undo" : "Complete"}
+          </Button>
+        </div>
       ),
-  },
-
-  {
-    title: "Priority",
-    dataIndex: "priority",
-    render: (p: string) => {
-      if (p === "high") return <Tag color="red">High</Tag>;
-      if (p === "medium") return <Tag color="gold">Medium</Tag>;
-      return <Tag color="green">Low</Tag>;
-    }
-  },
-
-  {
-    title: "Status",
-    render: (todo: any) =>
-      todo.completed ? (
-        <Tag color="green">Completed</Tag>
-      ) : (
-        <Tag color="red">Pending</Tag>
-      ),
-  },
-
-  {
-    title: "Action",
-    render: (todo: any) => (
-      <div style={{ display: "flex", gap: 10 }}>
-        <Button
-          type="primary"
-          onClick={() => {
-            setEditingTodo(todo);
-            setIsModalOpen(true);
-          }}
-        >
-          Edit
-        </Button>
-
-        <Popconfirm
-          title="Delete this todo?"
-          onConfirm={() => removeTodo(todo.id)}
-        >
-          <Button danger>Delete</Button>
-        </Popconfirm>
-
-        <Button
-          onClick={() => toggleCompleteStatus(todo.id)}
-          type={todo.completed ? "default" : "dashed"}
-        >
-          {todo.completed ? "Undo" : "Complete"}
-        </Button>
-      </div>
-    ),
-  },
-];
-
+    },
+  ];
 
   return (
-    <div>
-      <div style={{ marginBottom: 20, textAlign: "right" }}>
+    <Card
+      title="Todo List"
+      extra={
         <Button
           type="primary"
           onClick={() => {
@@ -93,8 +93,9 @@ export default function TodoList() {
         >
           Add Todo
         </Button>
-      </div>
-
+      }
+      style={{ borderRadius: 12 }}
+    >
       <Table
         rowKey="id"
         columns={columns}
@@ -105,6 +106,6 @@ export default function TodoList() {
           onChange: (page) => loadTodos(page),
         }}
       />
-    </div>
+    </Card>
   );
 }

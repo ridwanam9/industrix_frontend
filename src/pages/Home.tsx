@@ -1,5 +1,5 @@
 import TodoList from "../components/TodoList";
-import { Input, Select } from "antd";
+import { Input, Select, Card } from "antd";
 import { useTodos } from "../context/TodoContext";
 import { useCategories } from "../context/CategoryContext";
 import TodoForm from "../components/TodoForm";
@@ -15,82 +15,68 @@ export default function Home() {
   const { categories } = useCategories();
 
   return (
-    <div
-      style={{
-        maxWidth: 900,
-        margin: "30px auto",
-        padding: "0 16px",
-      }}
-    >
-      {/* Top Section */}
-      <div
+    <>
+      {/* FILTER CARD */}
+      <Card
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: 12,
           marginBottom: 20,
+          borderRadius: 12,
         }}
       >
+        {/* Search */}
         <Input.Search
           placeholder="Search todos..."
           onSearch={(v) => setSearch(v)}
+          style={{ marginBottom: 16 }}
+        />
+
+        {/* Filters */}
+        <div
           style={{
-            flex: 1,
-            minWidth: 180,
+            display: "flex",
+            gap: 12,
+            flexWrap: "wrap",
           }}
-        />
+        >
+          <Select
+            placeholder="Status"
+            allowClear
+            onChange={(v) => setStatusFilter(v || "")}
+            style={{ width: 160 }}
+            options={[
+              { value: "completed", label: "Completed" },
+              { value: "pending", label: "Pending" }
+            ]}
+          />
 
-      </div>
+          <Select
+            placeholder="Category"
+            allowClear
+            onChange={(v) => setCategoryFilter(v || "")}
+            style={{ width: 160 }}
+            options={categories.map((c: any) => ({
+              value: c.id,
+              label: c.name,
+            }))}
+          />
 
-      {/* Filters */}
-      <div
-        style={{
-          display: "flex",
-          rowGap: 12,
-          columnGap: 12,
-          flexWrap: "wrap",
-          marginBottom: 20,
-        }}
-      >
-        <Select
-          placeholder="Status"
-          allowClear
-          onChange={(v) => setStatusFilter(v || "")}
-          style={{ width: 160 }}
-          options={[
-            { value: "completed", label: "Completed" },
-            { value: "pending", label: "Pending" }
-          ]}
-        />
+          <Select
+            placeholder="Priority"
+            allowClear
+            onChange={(v) => setPriorityFilter(v || "")}
+            style={{ width: 160 }}
+            options={[
+              { value: "high", label: "High" },
+              { value: "medium", label: "Medium" },
+              { value: "low", label: "Low" },
+            ]}
+          />
+        </div>
+      </Card>
 
-        <Select
-          placeholder="Category"
-          allowClear
-          onChange={(v) => setCategoryFilter(v || "")}
-          style={{ width: 160 }}
-          options={categories.map((c: any) => ({
-            value: c.id,
-            label: c.name,
-          }))}
-        />
-
-        <Select
-          placeholder="Priority"
-          allowClear
-          onChange={(v) => setPriorityFilter(v || "")}
-          style={{ width: 160 }}
-          options={[
-            { value: "high", label: "High" },
-            { value: "medium", label: "Medium" },
-            { value: "low", label: "Low" },
-          ]}
-        />
-      </div>
-
+      {/* Todo List */}
       <TodoList />
       <TodoForm />
-    </div>
+    </>
   );
 }
