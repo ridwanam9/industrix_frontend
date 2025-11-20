@@ -1,5 +1,5 @@
 import TodoList from "../components/TodoList";
-import { Input, Select } from "antd";
+import { Input, Select, Button } from "antd";
 import { useTodos } from "../context/TodoContext";
 import { useCategories } from "../context/CategoryContext";
 import TodoForm from "../components/TodoForm";
@@ -9,71 +9,95 @@ export default function Home() {
     setSearch,
     setStatusFilter,
     setCategoryFilter,
-    setPriorityFilter
+    setPriorityFilter,
+    openForm,
   } = useTodos();
 
   const { categories } = useCategories();
 
   return (
-    <div style={{ maxWidth: 900, margin: "50px auto" }}>
-      {/* --- FILTER BAR --- */}
+    <div
+      style={{
+        maxWidth: 900,
+        margin: "30px auto",
+        padding: "0 16px",
+      }}
+    >
+      {/* Top Section */}
       <div
         style={{
           display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
           gap: 12,
+          marginBottom: 20,
+        }}
+      >
+        <Input.Search
+          placeholder="Search todos..."
+          onSearch={(v) => setSearch(v)}
+          style={{
+            flex: 1,
+            minWidth: 180,
+          }}
+        />
+
+        <Button
+          type="primary"
+          onClick={openForm}
+          style={{ flexShrink: 0 }}
+        >
+          + Add Todo
+        </Button>
+      </div>
+
+      {/* Filters */}
+      <div
+        style={{
+          display: "flex",
+          rowGap: 12,
+          columnGap: 12,
           flexWrap: "wrap",
           marginBottom: 20,
         }}
       >
-        {/* Search */}
-        <Input.Search
-          placeholder="Search todos..."
-          onSearch={(v) => setSearch(v)}
-          style={{ width: 220 }}
-        />
-
-        {/* Status Filter */}
         <Select
           placeholder="Status"
           allowClear
           onChange={(v) => setStatusFilter(v || "")}
-          style={{ width: 150 }}
+          style={{ width: 160 }}
           options={[
             { value: "completed", label: "Completed" },
             { value: "pending", label: "Pending" }
           ]}
         />
 
-        {/* Category Filter */}
         <Select
           placeholder="Category"
           allowClear
           onChange={(v) => setCategoryFilter(v || "")}
-          style={{ width: 150 }}
-          options={categories.map((cat: any) => ({
-            value: cat.id,
-            label: cat.name
+          style={{ width: 160 }}
+          options={categories.map((c: any) => ({
+            value: c.id,
+            label: c.name,
           }))}
         />
 
-        {/* Priority Filter */}
         <Select
           placeholder="Priority"
           allowClear
           onChange={(v) => setPriorityFilter(v || "")}
-          style={{ width: 150 }}
+          style={{ width: 160 }}
           options={[
             { value: "high", label: "High" },
             { value: "medium", label: "Medium" },
-            { value: "low", label: "Low" }
+            { value: "low", label: "Low" },
           ]}
         />
       </div>
 
-      {/* --- TODO LIST --- */}
       <TodoList />
-
-      {/* --- FORM MODAL --- */}
       <TodoForm />
     </div>
   );
