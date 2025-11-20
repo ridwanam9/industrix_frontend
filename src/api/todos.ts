@@ -1,7 +1,15 @@
 import { api } from "./axios";
 
-export const getTodos = (page: number = 1, search: string = "") =>
-  api.get(`/todos?page=${page}&search=${search}`);
+export const getTodos = (
+  page: number = 1,
+  search: string = "",
+  status: string = "",
+  category: string = "",
+  priority: string = ""
+) =>
+  api.get(
+    `/todos?page=${page}&search=${search}&status=${status}&category=${category}&priority=${priority}`
+  );
 
 export const createTodo = (data: any) =>
   api.post("/todos", data);

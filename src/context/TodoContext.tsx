@@ -12,12 +12,24 @@ export const TodoProvider = ({ children }: any) => {
   const [search, setSearch] = useState("");
   const [editingTodo, setEditingTodo] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [priorityFilter, setPriorityFilter] = useState("");
+
 
   const loadTodos = async (page = 1) => {
-    const res = await getTodos(page, search);
+    const res = await getTodos(
+      page,
+      search,
+      statusFilter,
+      categoryFilter,
+      priorityFilter
+    );
+
     setTodos(res.data.data);
     setPagination(res.data.pagination);
   };
+
 
   const addTodo = async (data: any) => {
     await createTodo(data);
@@ -41,7 +53,7 @@ export const TodoProvider = ({ children }: any) => {
 
   useEffect(() => {
     loadTodos();
-  }, [search]);
+  }, [search, statusFilter, categoryFilter, priorityFilter]);
 
   return (
     <TodoContext.Provider
@@ -60,7 +72,12 @@ export const TodoProvider = ({ children }: any) => {
         editingTodo,
         isModalOpen,
         setIsModalOpen,
-        toggleCompleteStatus
+        toggleCompleteStatus,
+
+        statusFilter, setStatusFilter,
+        categoryFilter, setCategoryFilter,
+        priorityFilter, setPriorityFilter,
+
       }}
     >
       {children}
