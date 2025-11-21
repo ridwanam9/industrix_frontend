@@ -99,7 +99,7 @@ createdb industrix_todo_test
 
 #### Configure database credentials
 
-Edit /backend/config/config.json:
+Edit /industrix_backend/config/config.json:
 ```json
 {
   "development": {
